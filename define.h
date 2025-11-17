@@ -5,10 +5,10 @@
 extern "C" {
 #endif
 
-#define SZx_SCES 1
-#define SZx_FERR 2
-#define SZx_VER_MAJOR 0
-#define SZx_VER_MINOR 1
+#define SZxp_SCES 1
+#define SZxp_FERR 2
+#define SZxp_VER_MAJOR 0
+#define SZxp_VER_MINOR 1
 
 typedef union lfloat
 {

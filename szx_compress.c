@@ -1,8 +1,6 @@
 #include "define.h"
 #include <stdio.h> 
-#include <stdint.h>
 #include <string.h>
-#include <stdlib.h>
 #include "szx.h"
 
 inline void longToBytes_bigEndian(unsigned char *b, unsigned long num) 
@@ -126,7 +124,7 @@ size_t computeStateMedianRadius_float(float *oriData, size_t nbEle, float absErr
     return nbConstantBlocks;
 }
 
-inline void SZx_compress_one_block_float(float *oriData, size_t nbEle, float absErrBound,
+inline void szx_compress_one_block_float(float *oriData, size_t nbEle, float absErrBound,
                                                                 unsigned char *outputBytes, int *outSize,
                                                                 unsigned char *leadNumberArray_int, float medianValue,
                                                                 float radius) {
@@ -396,7 +394,7 @@ inline size_t convertIntArray2ByteArray_fast_2b_args(unsigned char* timeStepType
 }
 
 unsigned char *
-SZx_compress_float(float *oriData, size_t *outSize, float absErrBound,
+szx_compress_float(float *oriData, size_t *outSize, float absErrBound,
     size_t nbEle, int blockSize) {
     float *op = oriData;
 
@@ -426,8 +424,8 @@ SZx_compress_float(float *oriData, size_t *outSize, float absErrBound,
     size_t nbNonConstantBlocks = actualNBBlocks - nbConstantBlocks;
 
     unsigned char *r = outputBytes; // + sizeof(size_t) + stateNBBytes;
-    r[0] = SZx_VER_MAJOR;
-    r[1] = SZx_VER_MINOR;
+    r[0] = SZxp_VER_MAJOR;
+    r[1] = SZxp_VER_MINOR;
     r[2] = 1;
     r[3] = 1; //support random access decompression
     r = r + 4; //1 byte
@@ -448,7 +446,7 @@ SZx_compress_float(float *oriData, size_t *outSize, float absErrBound,
     //printf("nbConstantBlocks = %zu, percent = %f\n", nbConstantBlocks, 1.0f*(nbConstantBlocks*blockSize)/nbEle);
     for (i = 0; i < nbBlocks; i++, op += blockSize) {
         if (stateArray[i]) {
-            SZx_compress_one_block_float(op, blockSize, absErrBound, q, &oSize,
+            szx_compress_one_block_float(op, blockSize, absErrBound, q, &oSize,
                                                                 leadNumberArray_int, medianArray[i], radiusArray[i]);
             q += oSize;
             *outSize += oSize;
@@ -461,7 +459,7 @@ SZx_compress_float(float *oriData, size_t *outSize, float absErrBound,
 
     if (remainCount != 0) {
         if (stateArray[i]) {
-            SZx_compress_one_block_float(op, remainCount, absErrBound, q, &oSize,
+            szx_compress_one_block_float(op, remainCount, absErrBound, q, &oSize,
                                                                 leadNumberArray_int, medianArray[i], radiusArray[i]);
             *outSize += oSize;
             O[nonConstantBlockID] = oSize;

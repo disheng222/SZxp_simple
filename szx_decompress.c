@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include "szx.h"
 
@@ -153,7 +152,7 @@ void convertByteArray2IntArray_fast_1b_args(size_t intArrayLength, unsigned char
 	intArray[n++] = (tmp & 0x01) >> 0;	
 }
 
-int SZx_decompress_one_block_float(float* newData, size_t blockSize, unsigned char* cmpBytes)
+int szx_decompress_one_block_float(float* newData, size_t blockSize, unsigned char* cmpBytes)
 {
 	int cmpSize = 0;
 	size_t nbEle = blockSize;
@@ -357,7 +356,7 @@ int SZx_decompress_one_block_float(float* newData, size_t blockSize, unsigned ch
 	return cmpSize;
 }
 
-void SZx_decompress_float(float** newData, size_t nbEle, unsigned char* cmpBytes)
+void szx_decompress_float(float** newData, size_t nbEle, unsigned char* cmpBytes)
 {
 	*newData = (float*)malloc(sizeof(float)*nbEle);
 	
@@ -399,7 +398,7 @@ void SZx_decompress_float(float** newData, size_t nbEle, unsigned char* cmpBytes
 		unsigned char state = stateArray[i];
 		if(state) //non-constant block
 		{
-            SZx_decompress_one_block_float(op, blockSize, q);
+            szx_decompress_one_block_float(op, blockSize, q);
             q += O[nonConstantBlockID];
             nonConstantBlockID++;
 		}
@@ -418,7 +417,7 @@ void SZx_decompress_float(float** newData, size_t nbEle, unsigned char* cmpBytes
 		unsigned char state = stateArray[i];
 		if(state) //non-constant block
 		{
-			SZx_decompress_one_block_float(op, remainCount, q);	
+			szx_decompress_one_block_float(op, remainCount, q);	
 		}
 		else //constant block
 		{

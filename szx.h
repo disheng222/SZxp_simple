@@ -1,3 +1,6 @@
+#ifndef SZX_H
+#define SZX_H
+
 #include "utility.h"
 
 void floatToBytes(unsigned char *b, float num);
@@ -21,12 +24,14 @@ size_t convertIntArray2ByteArray_fast_2b_args(unsigned char* timeStepType, size_
 void convertByteArray2IntArray_fast_2b(size_t stepLength, unsigned char* byteArray, size_t byteArrayLength, unsigned char **intArray);
 void convertByteArray2IntArray_fast_1b_args(size_t intArrayLength, unsigned char* byteArray, size_t byteArrayLength, unsigned char* intArray);
 
-void SZx_compress_one_block_float(float *oriData, size_t nbEle, float absErrBound,
+void szx_compress_one_block_float(float *oriData, size_t nbEle, float absErrBound,
                                                                 unsigned char *outputBytes, int *outSize,
                                                                 unsigned char *leadNumberArray_int, float medianValue,
                                                                 float radius);
 
-int SZx_decompress_one_block_float(float* newData, size_t blockSize, unsigned char* cmpBytes);
+int szx_decompress_one_block_float(float* newData, size_t blockSize, unsigned char* cmpBytes);
 
-unsigned char *SZx_compress_float(float *oriData, size_t *outSize, float absErrBound, size_t nbEle, int blockSize);
-void SZx_decompress_float(float** newData, size_t nbEle, unsigned char* cmpBytes);
+unsigned char *szx_compress_float(float *oriData, size_t *outSize, float absErrBound, size_t nbEle, int blockSize);
+void szx_decompress_float(float** newData, size_t nbEle, unsigned char* cmpBytes);
+
+#endif /* SZX_H */

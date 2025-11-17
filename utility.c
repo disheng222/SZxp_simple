@@ -9,20 +9,20 @@ void writeByteData(unsigned char *bytes, size_t byteLength, char *tgtFilePath, i
     if (pFile == NULL)
     {
         printf("Failed to open input file. 3\n");
-        *status = SZx_FERR;
+        *status = SZxp_FERR;
         return;
     }
     
     fwrite(bytes, 1, byteLength, pFile); //write outSize bytes
     fclose(pFile);
-    *status = SZx_SCES;
+    *status = SZxp_SCES;
 }
 
 //write float data in bytes (e.g., write decompressed data into a file)
 void writeFloatData_inBytes(float *data, size_t nbEle, char* tgtFilePath, int *status)
 {
 	size_t i = 0; 
-	int state = SZx_SCES;
+	int state = SZxp_SCES;
 	lfloat buf;
 	unsigned char* bytes = (unsigned char*)malloc(nbEle*sizeof(float));
 	for(i=0;i<nbEle;i++)
@@ -48,7 +48,7 @@ float *readFloatData(char *srcFilePath, size_t *nbEle, int *status)
     if (pFile == NULL)
     {
         printf("Failed to open input file. 1\n");
-        *status = SZx_FERR;
+        *status = SZxp_FERR;
         return NULL;
     }
 	fseek(pFile, 0, SEEK_END);
@@ -59,7 +59,7 @@ float *readFloatData(char *srcFilePath, size_t *nbEle, int *status)
     if(inSize<=0)
     {
 		printf("Error: input file is wrong!\n");
-		*status = SZx_FERR;
+		*status = SZxp_FERR;
 	}
     
     float *daBuf = (float *)malloc(inSize);
@@ -68,12 +68,12 @@ float *readFloatData(char *srcFilePath, size_t *nbEle, int *status)
     if (pFile == NULL)
     {
         printf("Failed to open input file. 2\n");
-        *status = SZx_FERR;
+        *status = SZxp_FERR;
         return NULL;
     }
     fread(daBuf, 4, *nbEle, pFile);
     fclose(pFile);
-    *status = SZx_SCES;
+    *status = SZxp_SCES;
     return daBuf;
 }
 
@@ -83,7 +83,7 @@ unsigned char *readByteData(char *srcFilePath, size_t *byteLength, int *status)
     if (pFile == NULL)
     {
         printf("Failed to open input file. 1\n");
-        *status = SZx_FERR;
+        *status = SZxp_FERR;
         return 0;
     }
 	fseek(pFile, 0, SEEK_END);
@@ -96,11 +96,11 @@ unsigned char *readByteData(char *srcFilePath, size_t *byteLength, int *status)
     if (pFile == NULL)
     {
         printf("Failed to open input file. 2\n");
-        *status = SZx_FERR;
+        *status = SZxp_FERR;
         return 0;
     }
     fread(byteBuf, 1, *byteLength, pFile);
     fclose(pFile);
-    *status = SZx_SCES;
+    *status = SZxp_SCES;
     return byteBuf;
 }

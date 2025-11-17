@@ -3,30 +3,46 @@ CC = gcc
 CFLAGS = -Wall -g -I.
 
 # ---- Compression ----
-COMPRESS_SRCS = szx_compress.c utility.c compress_main.c
-COMPRESS_OBJS = $(COMPRESS_SRCS:.c=.o)
-COMPRESS_BIN = szx_compress
+SZX_COMPRESS_SRCS = szx_compress.c utility.c szx_compress_main.c
+SZX_COMPRESS_OBJS = $(SZX_COMPRESS_SRCS:.c=.o)
+SZX_COMPRESS_BIN = szx_compress
 
-# ---- Decompression (not yet implemented) ----
-DECOMPRESS_SRCS = szx_decompress.c utility.c decompress_main.c
-DECOMPRESS_OBJS = $(DECOMPRESS_SRCS:.c=.o)
-DECOMPRESS_BIN = szx_decompress
+# ---- Decompression ----
+SZX_DECOMPRESS_SRCS = szx_decompress.c utility.c szx_decompress_main.c
+SZX_DECOMPRESS_OBJS = $(SZX_DECOMPRESS_SRCS:.c=.o)
+SZX_DECOMPRESS_BIN = szx_decompress
 
-# Default target builds only compression for now
-all: $(COMPRESS_BIN) $(DECOMPRESS_BIN)
+# ---- Compression ----
+SZP_COMPRESS_SRCS = szp_compress.c utility.c szp_compress_main.c
+SZP_COMPRESS_OBJS = $(SZP_COMPRESS_SRCS:.c=.o)
+SZP_COMPRESS_BIN = szp_compress
+
+# ---- Decompression ----
+SZP_DECOMPRESS_SRCS = szp_decompress.c utility.c szp_decompress_main.c
+SZP_DECOMPRESS_OBJS = $(SZP_DECOMPRESS_SRCS:.c=.o)
+SZP_DECOMPRESS_BIN = szp_decompress
+
+all: $(SZX_COMPRESS_BIN) $(SZX_DECOMPRESS_BIN) $(SZP_COMPRESS_BIN) $(SZP_DECOMPRESS_BIN)
 
 # Build compression binary
-$(COMPRESS_BIN): $(COMPRESS_OBJS)
-	$(CC) $(CFLAGS) -o $@ $(COMPRESS_OBJS)
+$(SZX_COMPRESS_BIN): $(SZX_COMPRESS_OBJS)
+	$(CC) $(CFLAGS) -o $@ $(SZX_COMPRESS_OBJS)
 
-# Build decompression binary (disabled for now)
-$(DECOMPRESS_BIN): $(DECOMPRESS_OBJS)
-	$(CC) $(CFLAGS) -o $@ $(DECOMPRESS_OBJS)
+# Build decompression binary
+$(SZX_DECOMPRESS_BIN): $(SZX_DECOMPRESS_OBJS)
+	$(CC) $(CFLAGS) -o $@ $(SZX_DECOMPRESS_OBJS)
 
+# Build compression binary
+$(SZP_COMPRESS_BIN): $(SZP_COMPRESS_OBJS)
+	$(CC) $(CFLAGS) -o $@ $(SZP_COMPRESS_OBJS) -lm
+
+# Build decompression binary
+$(SZP_DECOMPRESS_BIN): $(SZP_DECOMPRESS_OBJS)
+	$(CC) $(CFLAGS) -o $@ $(SZP_DECOMPRESS_OBJS) -lm
 # Generic rule for compiling .c to .o
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Clean up
 clean:
-	rm -f *.o $(COMPRESS_BIN) $(DECOMPRESS_BIN)
+	rm -f *.o $(SZX_COMPRESS_BIN) $(SZX_DECOMPRESS_BIN) $(SZP_COMPRESS_BIN) $(SZP_DECOMPRESS_BIN)
